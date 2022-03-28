@@ -1,0 +1,15 @@
+1. Gửi tin nhắn đến tele bot
+2. Thông tin config để ở file json
+    # Load config file
+    f = open('config.json')
+    config = json.load(f)
+    # json example
+    {
+        "id_bot": "5253001746:AAHmJRz2EGeJrBMkC8C3w7dtXINwCzlU1TE",
+        "id_user": "-670226804"
+    }
+3. Gửi tin nhắn theo format
+# hh:mm
+max/min/avg
+Buy: 24.232/ 25.823/ 26.113
+Sell: 24.232/ 25.823/ 26.113
