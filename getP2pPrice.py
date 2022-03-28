@@ -1,6 +1,25 @@
 import requests
 import json
 
+def readFileConfig():
+    f = open ('./config.json', "r")
+    data = json.loads(f.read())
+    f.close()
+    return data
+
+def telegram_bot_sendtext(token_bot, id_chat, bot_message):
+   bot_token = token_bot
+   bot_chatID = id_chat
+   send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+
+   response = requests.get(send_text)
+   return response.json()
+
+def send_message(message):
+
+    send = telegram_bot_sendtext(data['id_bot'], data['id_user'], message)
+    print(send)
+
 url = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
 
 json_payload = {
@@ -29,7 +48,7 @@ for data in json_response_data["data"]:
     buy_prices.append(price)
     count = count + 1
     sum_buy_price = sum_buy_price + price
-avg_buy_price = sum_buy_price/count
+avg_buy_price = int(sum_buy_price/count)
 
 # SELL
 json_payload["tradeType"] = "SELL"
@@ -44,14 +63,30 @@ for data in json_response_data["data"]:
     sell_prices.append(price)
     count = count + 1
     sum_sell_price = sum_sell_price + price
-avg_sell_price = sum_sell_price/count
+avg_sell_price = int(sum_sell_price/count)
 
 # Xử lý dữ liệu:
 # Sent dữ liệu đến bot
-print("+-----+-------+-------+")
-print("| BUY |  SELL |  BUY  |")
-print("+-----+-------+-------+")
-print("| Min | %d | %d |" % (min(sell_prices), min(buy_prices)))
-print("| Max | %d | %d |" % (max(sell_prices), max(buy_prices)))
-print("| Avg | %d | %d |" % (avg_sell_price, avg_buy_price))
-print("+-----+-------+-------+")
+# print("+-----+-------+-------+")
+# print("| BUY |  SELL |  BUY  |")
+# print("+-----+-------+-------+")
+# print("| Min | %d | %d |" % (min(sell_prices), min(buy_prices)))
+# print("| Max | %d | %d |" % (max(sell_prices), max(buy_prices)))
+# print("| Avg | %d | %d |" % (avg_sell_price, avg_buy_price))
+# print("+-----+-------+-------+")
+
+buy_text  = "Buy : " + str(min(buy_prices)/1000) + " | " +  str(max(buy_prices)/1000) + " | " +  str(avg_buy_price/1000)
+sell_text = "Sell: " + str(min(sell_prices)/1000) + " | " +  str(max(sell_prices)/1000) + " | " +  str(avg_sell_price/1000)
+
+data = readFileConfig()
+message = "Price is " + data['type'] + " " + str(int(data['price'])/1000) + "\n" \
+          + buy_text + '\n' \
+          + sell_text
+# print(message)
+if (data['type'] == 'upper'):
+  if (int(data['price']) < max(sell_prices)):
+    send_message(message)
+
+elif (data['type'] == 'lower'):
+  if (int(data['price']) > min(buy_prices)):
+    send_message(message)
