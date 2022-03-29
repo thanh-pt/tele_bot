@@ -1,5 +1,11 @@
 import requests
 import json
+import os
+
+# Change working directory
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
 def readFileConfig():
     f = open ('./config.json', "r")
