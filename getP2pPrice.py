@@ -72,7 +72,7 @@ for data in json_response_data["data"]:
 avg_sell_price = int(sum_sell_price/count)
 
 # Xu ly du lieu:
-# Sent du lieu đen bot
+# Sent du lieu den bot
 # print("+-----+-------+-------+")
 # print("| BUY |  SELL |  BUY  |")
 # print("+-----+-------+-------+")
