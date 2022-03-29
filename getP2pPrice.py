@@ -65,8 +65,8 @@ for data in json_response_data["data"]:
     sum_sell_price = sum_sell_price + price
 avg_sell_price = int(sum_sell_price/count)
 
-# Xử lý dữ liệu:
-# Sent dữ liệu đến bot
+# Xu ly du lieu:
+# Sent du lieu đen bot
 # print("+-----+-------+-------+")
 # print("| BUY |  SELL |  BUY  |")
 # print("+-----+-------+-------+")
